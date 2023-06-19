@@ -1,0 +1,42 @@
+import nltk
+from nltk.corpus import wordnet
+
+def get_synsets(word):
+    # Get synsets (a set of synonyms) for a given word
+    synsets = wordnet.synsets(word)
+    return synsets
+
+def check_vocabulary_level(text):
+    # Tokenize the text into words
+    words = nltk.word_tokenize(text)
+
+    # Initialize counters for vocabulary levels
+    beginner_count = 0
+    intermediate_count = 0
+    advanced_count = 0
+
+    for word in words:
+        # Get the synsets for the word
+        synsets = get_synsets(word)
+
+        # Check the number of synsets to determine the vocabulary level
+        if len(synsets) <= 2:
+            beginner_count += 1
+        elif len(synsets) <= 5:
+            intermediate_count += 1
+        else:
+            advanced_count += 1
+
+    # Determine the overall vocabulary level based on the counts
+    if advanced_count >= intermediate_count and advanced_count >= beginner_count:
+        return "Advanced"
+    elif intermediate_count >= beginner_count:
+        return "Intermediate"
+    else:
+        return "Beginner"
+
+
+# Example usage
+text = "The quick brown fox jumps over the lazy dog"
+level = check_vocabulary_level(text)
+print(f"The English proficiency level of the text is: {level}")
